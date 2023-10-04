@@ -6,6 +6,7 @@ export async function GET() {
   console.log("In Get request");
   const cookie = cookies();
   const token = cookie.get("cookie-token")?.value;
+  console.log("This is the token: ", token);
 
   if (!token) {
     return NextResponse.json({ error: "No token provided" });
