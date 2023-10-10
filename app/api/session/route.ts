@@ -1,12 +1,11 @@
 import { prisma } from "@/lib/prisma";
-import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
 
 export async function GET() {
-  console.log("In Get request");
+  console.log("in api route");
   const cookie = cookies();
   const token = cookie.get("cookie-token")?.value;
-  console.log("This is the token: ", token);
 
   if (!token) {
     return NextResponse.json({ error: "No token provided" });
@@ -27,7 +26,6 @@ export async function GET() {
 
   // Exclude sensitive fields
   const { password, ...userWithoutPassword } = session.user;
-  console.log(userWithoutPassword);
 
   return NextResponse.json(userWithoutPassword);
 }

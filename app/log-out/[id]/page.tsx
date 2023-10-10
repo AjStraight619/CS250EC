@@ -1,4 +1,5 @@
 const handleLogout = async (id: string) => {
+  console.log(id);
   const response = await fetch(`/api/log-out${id}`, {
     method: "DELETE",
   });

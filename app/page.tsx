@@ -1,8 +1,8 @@
-import Link from "next/link";
 import { cookies } from "next/headers";
+import Link from "next/link";
 
-async function getData() {
-  const response = await fetch("http://localhost:3000/api/session", {
+export async function getData() {
+  const response = await fetch("http://localhost:3004/api/session", {
     headers: {
       Cookie: cookies()
         .getAll()
@@ -15,6 +15,7 @@ async function getData() {
 
 export default async function Home() {
   const token = await getData();
+  console.log(token);
   const { name, email, id } = token;
 
   return (
@@ -24,7 +25,7 @@ export default async function Home() {
           <>
             <Link
               className="text-blue-500 hover:underline mr-4"
-              href={`/log-out/${id}`}
+              href={`/api/log-out?id=${id}`}
             >
               Log Out
             </Link>

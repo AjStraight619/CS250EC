@@ -1,9 +1,12 @@
 import { prisma } from "@/lib/prisma";
-import { NextRequest, NextResponse } from "next/server";
+import { NextApiRequest, NextApiResponse } from "next";
 import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
 
-export async function DELETE(req: NextRequest) {
-  const { id: userId } = JSON.parse(await req.text());
+export async function DELETE(req: NextApiRequest, res: NextApiResponse) {
+  console.log(req.query);
+  const { id } = req.query;
+  const userId = id as string;
 
   const isUser = await prisma.user.findUnique({
     where: {
