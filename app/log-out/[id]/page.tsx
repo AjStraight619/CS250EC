@@ -1,5 +1,3 @@
-import React from "react";
-
 const handleLogout = async (id: string) => {
   const response = await fetch(`/api/log-out${id}`, {
     method: "DELETE",
