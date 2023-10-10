@@ -1,5 +1,4 @@
 import Link from "next/link";
-
 import { cookies } from "next/headers";
 
 async function getData() {
@@ -15,20 +14,17 @@ async function getData() {
 }
 
 export default async function Home() {
-  console.log("Home");
   const token = await getData();
-  const { name, email } = token;
-  console.log("name: " + name);
-  console.log("email: " + email);
+  const { name, email, id } = token;
 
   return (
     <div className="w-full">
       <nav className="p-4 border-b border-gray-800 flex justify-end">
-        {token ? (
+        {token && token.name ? (
           <>
             <Link
               className="text-blue-500 hover:underline mr-4"
-              href="/log-out"
+              href={`/log-out/${id}`}
             >
               Log Out
             </Link>
@@ -49,10 +45,18 @@ export default async function Home() {
         )}
       </nav>
 
-      <div>
-        <pre>{JSON.stringify({ name, email })}</pre>
-        {/* Displaying name and value from the API response */}
-      </div>
+      {token && token.name ? (
+        <div>
+          <pre>{JSON.stringify({ name, email })}</pre>
+        </div>
+      ) : (
+        <div>
+          <p>
+            You are seeing this because you are not logged in. When you log in,
+            you will see your name and email address here.
+          </p>
+        </div>
+      )}
     </div>
   );
 }

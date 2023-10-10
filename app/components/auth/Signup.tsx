@@ -2,10 +2,8 @@
 import React, { useState } from "react";
 import * as Form from "@radix-ui/react-form";
 import { TextFieldInput, Button } from "@radix-ui/themes";
-import { useRouter } from "next/navigation";
 
 const SignIn = () => {
-  const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

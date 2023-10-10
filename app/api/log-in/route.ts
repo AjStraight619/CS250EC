@@ -17,9 +17,9 @@ export async function POST(req: NextRequest) {
   });
 
   if (user) {
-    const userId = user.id;
+    const { name, email, id } = user;
 
-    return NextResponse.json({ userId });
+    return NextResponse.json({ user });
   } else {
     return NextResponse.json({ error: "User not found" });
   }

@@ -1,7 +1,11 @@
 import React from "react";
 
-const Logout = async () => {
-  return <div></div>;
+const LogoutButton = async ({ params }: any) => {
+  return (
+    <div>
+      <h1>Logout</h1>
+    </div>
+  );
 };
 
-export default Logout;
+export default LogoutButton;

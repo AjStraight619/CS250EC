@@ -1,20 +1,32 @@
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
-import { hash } from "bcrypt";
+import { cookies } from "next/headers";
 
-export async function POST(req: NextRequest) {
-  const formData = await req.formData();
-  const email = formData.get("email") as unknown as string;
+export async function DELETE(req: NextRequest) {
+  const { id: userId } = JSON.parse(await req.text());
 
-  if (!email) {
-    return NextResponse.json({ error: "Invalid email" });
-  }
-
-  const user = await prisma.user.findUnique({
+  const isUser = await prisma.user.findUnique({
     where: {
-      email: email,
+      id: userId,
     },
   });
 
-  return NextResponse.json({ user });
+  const token = cookies().get("cookie-token")?.value;
+
+  if (isUser) {
+    await prisma.session.deleteMany({
+      where: {
+        userId: userId,
+        token: token,
+      },
+    });
+  } else {
+    return NextResponse.json({ error: "User not found" });
+  }
+
+  const cookieHeader = cookies().delete("cookie-token");
+  return NextResponse.json({
+    message: "Successfully logged out, deleted cookie",
+    cookieHeader: cookieHeader,
+  });
 }
