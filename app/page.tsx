@@ -1,8 +1,10 @@
+import LogoutButton from "@/app/components/auth/Logout";
+import { Box, Flex, Text } from "@radix-ui/themes";
 import { cookies } from "next/headers";
 import Link from "next/link";
 
 export async function getData() {
-  const response = await fetch("http://localhost:3004/api/session", {
+  const response = await fetch("http://localhost:3001/api/session", {
     headers: {
       Cookie: cookies()
         .getAll()
@@ -15,21 +17,17 @@ export async function getData() {
 
 export default async function Home() {
   const token = await getData();
-  console.log(token);
-  const { name, email, id } = token;
+  console.log("this is the token: ", token);
+  const { user, address } = token;
+  console.log("This is the user", user);
 
   return (
     <div className="w-full">
       <nav className="p-4 border-b border-gray-800 flex justify-end">
-        {token && token.name ? (
+        {user ? (
           <>
-            <Link
-              className="text-blue-500 hover:underline mr-4"
-              href={`/api/log-out?id=${id}`}
-            >
-              Log Out
-            </Link>
-            <span>Hello, {name}</span>
+            <LogoutButton id={user.id} />
+            <span>Hello, {user.name}</span>
           </>
         ) : (
           <>
@@ -46,17 +44,26 @@ export default async function Home() {
         )}
       </nav>
 
-      {token && token.name ? (
-        <div>
-          <pre>{JSON.stringify({ name, email })}</pre>
-        </div>
+      {user ? (
+        <Flex direction={"column"} justify={"center"} align={"center"}>
+          <Box>
+            <p>Name: {user.name}</p>
+            <p>Email: {user.email}</p>
+            {address && (
+              <>
+                <p>Address: {address.street}</p>
+                <p>City: {address.city}</p>
+                <p>State: {address.state}</p>
+                <p>Zip: {address.zip}</p>
+                <p>Country: {address.country}</p>
+              </>
+            )}
+          </Box>
+        </Flex>
       ) : (
-        <div>
-          <p>
-            You are seeing this because you are not logged in. When you log in,
-            you will see your name and email address here.
-          </p>
-        </div>
+        <Flex justify={"center"} align={"center"}>
+          <Text>Please log in or sign up to see your profile.</Text>
+        </Flex>
       )}
     </div>
   );

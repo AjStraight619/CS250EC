@@ -1,12 +1,10 @@
 import { prisma } from "@/lib/prisma";
-import { NextApiRequest, NextApiResponse } from "next";
 import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function DELETE(req: NextApiRequest, res: NextApiResponse) {
-  console.log(req.query);
-  const { id } = req.query;
-  const userId = id as string;
+export async function DELETE(req: NextRequest) {
+  console.log("these are the headers", req.headers);
+  const userId = req.url.split("/").pop();
 
   const isUser = await prisma.user.findUnique({
     where: {

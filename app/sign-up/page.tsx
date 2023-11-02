@@ -1,15 +1,14 @@
-import { Flex, Box } from "@radix-ui/themes";
-import SignIn from "../components/auth/Signup";
-import { redirect } from "next/navigation";
+import { Box, Flex } from "@radix-ui/themes";
+import SignInForm from "../components/auth/Signup";
 
-const LoginPage = () => {
+const SignUpPage = () => {
   return (
-    <Flex justify="center" align="center" style={{ height: "100vh" }}>
+    <Flex justify="center" align="center" style={{ height: "100vh" }} gap={"2"}>
       <Box className="p-12 bg-zinc-900 rounded-lg">
-        <SignIn />
+        <SignInForm />
       </Box>
     </Flex>
   );
 };
 
-export default LoginPage;
+export default SignUpPage;

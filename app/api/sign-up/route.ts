@@ -1,14 +1,26 @@
 import { prisma } from "@/lib/prisma";
-import { NextRequest, NextResponse } from "next/server";
+import { UserInfo } from "@/types/types";
 import { cookies } from "next/headers";
+import { NextRequest, NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 
 export async function POST(req: NextRequest) {
   const formData = await req.formData();
-  console.log("Received form data:", formData);
-  const email = formData.get("email") as unknown as string;
-  const password = formData.get("password") as unknown as string;
-  const name = formData.get("name") as unknown as string;
+  const email = formData.get("email") as string;
+  const password = formData.get("password") as string;
+  const name = formData.get("name") as string;
+  const street = formData.get("address.street") as string;
+  const city = formData.get("address.city") as string;
+  const state = formData.get("address.state") as string;
+  const zip = formData.get("address.zip") as string;
+  const country = formData.get("address.country") as string;
+  const address = {
+    street: street,
+    city: city,
+    state: state,
+    zip: zip,
+    country: country,
+  } as UserInfo["address"];
 
   if (!email || !password) {
     return NextResponse.json({ error: "Invalid email or password" });
@@ -26,6 +38,9 @@ export async function POST(req: NextRequest) {
         email: email,
         password: password,
         name: name,
+        address: {
+          create: address,
+        },
       },
     });
 
@@ -40,7 +55,7 @@ export async function POST(req: NextRequest) {
     });
 
     // Create a new session record in the database with the generated token
-    await prisma.session.create({
+    const session = await prisma.session.create({
       data: {
         userId: user.id,
         token: token,
@@ -48,7 +63,7 @@ export async function POST(req: NextRequest) {
     });
 
     // Return the session token to the client
-    return NextResponse.json({ user, token });
+    return NextResponse.json({ user, token, session });
   } else {
     return NextResponse.json({ error: "User already exists" });
   }

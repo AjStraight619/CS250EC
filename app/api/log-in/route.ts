@@ -16,6 +16,9 @@ export async function POST(req: NextRequest) {
     where: {
       email: email,
     },
+    include: {
+      address: true,
+    },
   });
 
   const isPasswordValid = user?.password === password;
@@ -26,7 +29,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid password" });
   } else if (user && isPasswordValid) {
     const userId = user?.id;
-    const { name, email } = user;
+    const { name, email, address } = user;
     const token = uuidv4();
 
     cookies().set({
@@ -41,7 +44,7 @@ export async function POST(req: NextRequest) {
         token: token,
       },
     });
-    return NextResponse.json({ name, email, token });
+    return NextResponse.json({ name, email, address });
   } else {
     return NextResponse.json({ error: "User not found" });
   }

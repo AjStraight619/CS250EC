@@ -1,27 +1,33 @@
-const handleLogout = async (id: string) => {
-  console.log(id);
-  const response = await fetch(`/api/log-out${id}`, {
-    method: "DELETE",
-  });
-  if (response.ok) {
-    return response.json();
-  } else {
-    console.log("Status: " + response.status);
-  }
-};
+// import LogoutButton from "@/app/components/auth/Logout";
+// import { cookies } from "next/headers";
 
-const Logout = async ({ params }: any) => {
-  // grab id from url and pass to handleLogout
-  const logout = await handleLogout(params.id);
-  // grab message and cookieHeader from response
-  const { message, cookieHeader } = logout;
-  return (
-    <div>
-      <div>
-        {message} {cookieHeader}
-      </div>
-    </div>
-  );
-};
+// export const handleLogout = async (id: string) => {
+//   console.log(id);
+//   const response = await fetch(`http://localhost:3001/api/log-out/${id}`, {
+//     method: "DELETE",
+//     headers: {
+//       Cookie: cookies()
+//         .getAll()
+//         .map(({ name, value }) => `${name}=${value}`)
+//         .join("; "),
+//     },
+//   });
+//   if (response.ok) {
+//     return response.json();
+//   } else {
+//     console.log("Status: " + response.status);
+//   }
+// };
 
-export default Logout;
+// const Logout = async ({ params }: any) => {
+//   console.log("These is the id, in the logout", params.id);
+//   return (
+//     <div>
+//       <div>
+//         <LogoutButton id={params.id} handleLogout={handleLogout} />
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Logout;
