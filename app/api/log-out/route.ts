@@ -1,33 +1,44 @@
+// Server Component (DELETE handler)
 import { prisma } from "@/lib/prisma";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function DELETE(req: NextRequest) {
-  console.log("these are the headers", req.headers);
-  const userId = req.url.split("/").pop();
+  console.log(
+    "In delete route. this is the userId from the header: ",
+    req.url.split("/").pop()
+  );
 
-  const isUser = await prisma.user.findUnique({
-    where: {
-      id: userId,
-    },
-  });
+  try {
+    const userId = req.url.split("/").pop();
+    const token = cookies().get("cookie-token")?.value;
 
-  const token = cookies().get("cookie-token")?.value;
-
-  if (isUser) {
-    await prisma.session.deleteMany({
+    const isUser = await prisma.user.findUnique({
       where: {
-        userId: userId,
-        token: token,
+        id: userId,
       },
     });
-  } else {
-    return NextResponse.json({ error: "User not found" });
-  }
 
-  const cookieHeader = cookies().delete("cookie-token");
-  return NextResponse.json({
-    message: "Successfully logged out, deleted cookie",
-    cookieHeader: cookieHeader,
-  });
+    if (isUser) {
+      await prisma.session.deleteMany({
+        where: {
+          userId: userId,
+          token: token,
+        },
+      });
+
+      const response = NextResponse.json({
+        message: "Successfully logged out, deleted cookie",
+      });
+
+      // Delete the cookie
+      response.headers.delete("cookie-token");
+      return response;
+    } else {
+      return NextResponse.json({ error: "User not found" });
+    }
+  } catch (error) {
+    console.error("Logout error:", error);
+    return NextResponse.json({ error: "Internal server error" });
+  }
 }

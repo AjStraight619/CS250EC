@@ -1,7 +1,7 @@
-import LogoutButton from "@/app/components/auth/Logout";
 import { Box, Flex, Text } from "@radix-ui/themes";
 import { cookies } from "next/headers";
 import Link from "next/link";
+import LogoutButton from "./components/LogoutButton";
 
 export async function getData() {
   const response = await fetch("http://localhost:3001/api/session", {
