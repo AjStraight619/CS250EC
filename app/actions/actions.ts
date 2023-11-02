@@ -1,7 +1,6 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
 
 export async function UserLogout(id: string) {
   try {
@@ -18,7 +17,7 @@ export async function UserLogout(id: string) {
         },
       });
 
-      revalidatePath("/");
+      //   revalidatePath("/");
 
       return { message: "Successfully logged out, deleted cookie" };
     } else {

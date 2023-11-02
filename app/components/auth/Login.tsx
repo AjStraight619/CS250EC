@@ -24,6 +24,7 @@ const LogInForm = () => {
     }
     const data = await res.json();
     console.log(data);
+    router.refresh();
     router.push("/");
   };
 

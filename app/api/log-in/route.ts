@@ -1,4 +1,6 @@
 import { prisma } from "@/lib/prisma";
+import { compare } from "bcrypt";
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
@@ -21,13 +23,15 @@ export async function POST(req: NextRequest) {
     },
   });
 
-  const isPasswordValid = user?.password === password;
-
   if (!user) {
     return NextResponse.json({ error: "User not found" });
-  } else if (!isPasswordValid) {
+  }
+
+  const isPasswordValid = await compare(password, user.password);
+
+  if (!isPasswordValid) {
     return NextResponse.json({ error: "Invalid password" });
-  } else if (user && isPasswordValid) {
+  } else {
     const userId = user?.id;
     const { name, email, address } = user;
     const token = uuidv4();
@@ -44,8 +48,7 @@ export async function POST(req: NextRequest) {
         token: token,
       },
     });
+    revalidatePath("/");
     return NextResponse.json({ name, email, address });
-  } else {
-    return NextResponse.json({ error: "User not found" });
   }
 }

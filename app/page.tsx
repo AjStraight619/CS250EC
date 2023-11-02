@@ -4,7 +4,7 @@ import Link from "next/link";
 import LogoutButton from "./components/LogoutButton";
 
 export async function getData() {
-  const response = await fetch("http://localhost:3001/api/session", {
+  const response = await fetch("http://localhost:3000/api/session", {
     headers: {
       Cookie: cookies()
         .getAll()
@@ -25,10 +25,10 @@ export default async function Home() {
     <div className="w-full">
       <nav className="p-4 border-b border-gray-800 flex justify-end">
         {user ? (
-          <>
+          <Flex gap={"3"}>
+            <span className="mr-2">Hello, {user.name}</span>
             <LogoutButton id={user.id} />
-            <span>Hello, {user.name}</span>
-          </>
+          </Flex>
         ) : (
           <>
             <Link

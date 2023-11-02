@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { UserInfo } from "@/types/types";
+import { hash } from "bcrypt";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
@@ -32,11 +33,13 @@ export async function POST(req: NextRequest) {
     },
   });
 
+  const hashedPassword = await hash(password, 10);
+
   if (!isAlreadyUser) {
     const user = await prisma.user.create({
       data: {
         email: email,
-        password: password,
+        password: hashedPassword,
         name: name,
         address: {
           create: address,
