@@ -1,11 +1,11 @@
-import { Box } from "@radix-ui/themes";
+import CenteredBoxLayout from "../components/CenteredBoxLayout";
 import LogInForm from "../components/auth/Login";
 
 const LoginPage = () => {
   return (
-    <Box className="p-12 bg-zinc-900 rounded-lg">
+    <CenteredBoxLayout>
       <LogInForm />
-    </Box>
+    </CenteredBoxLayout>
   );
 };
 

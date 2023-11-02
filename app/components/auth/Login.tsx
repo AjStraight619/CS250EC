@@ -1,6 +1,7 @@
 "use client";
 import { SubmitButton } from "@/lib/SubmitButton";
-import { Box, Flex, Heading, TextFieldInput } from "@radix-ui/themes";
+import { Flex, Heading, Text, TextFieldInput } from "@radix-ui/themes";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -33,41 +34,38 @@ const LogInForm = () => {
   };
 
   return (
-    <>
-      <Box>
-        <form onSubmit={onSubmit}>
-          <Flex
-            align={"center"}
-            justify={"center"}
-            style={{ height: "100vh" }}
-            position="relative"
-            gap={"2"}
-            direction={"column"}
-          >
-            <Box mb={"3"}>
-              <Heading>Login</Heading>
-            </Box>
-            {error && <p style={{ color: "red" }}>{error}</p>}{" "}
-            {/* Display error message */}
-            <TextFieldInput
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-            <TextFieldInput
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            <SubmitButton>Log in</SubmitButton>
-          </Flex>
-        </form>
-      </Box>
-    </>
+    <form onSubmit={onSubmit}>
+      <Flex direction={"column"} gap={"2"}>
+        <Heading align={"center"} mb={"2"}>
+          Login
+        </Heading>
+        {error && <p className="text-red-500">{error}</p>}{" "}
+        {/* Display error message */}
+        <TextFieldInput
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <TextFieldInput
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <SubmitButton>Log in</SubmitButton>
+        <Flex justify={"center"} mt={"2"}>
+          <Text>
+            Dont have an account?{" "}
+            <Link href="/sign-up" className="text-blue-500 hover:underline">
+              Sign up
+            </Link>
+          </Text>
+        </Flex>
+      </Flex>
+    </form>
   );
 };
 

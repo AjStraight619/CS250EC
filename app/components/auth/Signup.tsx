@@ -2,6 +2,7 @@
 import { SubmitButton } from "@/lib/SubmitButton";
 import { UserInfo } from "@/types/types";
 import { Box, Flex, Heading, Text, TextFieldInput } from "@radix-ui/themes";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -64,135 +65,132 @@ const SignUpForm = () => {
   };
 
   return (
-    <>
-      <Box>
-        <form onSubmit={handleSubmit}>
-          <Flex
-            direction={"column"}
-            gap={"2"}
-            align={"center"}
-            justify={"center"}
-          >
-            <Box mb={"3"}>
-              <Heading>Sign Up</Heading>
-            </Box>
+    <form onSubmit={handleSubmit}>
+      <Flex direction={"column"} gap={"2"}>
+        <Heading align={"center"} mb={"2"}>
+          Sign Up
+        </Heading>
 
-            <Box className="flex justify-start">
-              <Text>Account Information</Text>
-            </Box>
+        <Box className="flex justify-start">
+          <Text>Account Information</Text>
+        </Box>
 
-            <TextFieldInput
-              value={userData.email}
-              name="email"
-              onChange={(e) =>
-                setUserData((prev) => ({ ...prev, email: e.target.value }))
-              }
-              placeholder="Email"
-              required
-              size={"2"}
-            />
-            <TextFieldInput
-              value={userData.name || ""}
-              name="name"
-              onChange={(e) =>
-                setUserData((prev) => ({ ...prev, name: e.target.value }))
-              }
-              placeholder="Name"
-            />
-            <TextFieldInput
-              value={userData.password}
-              name="password"
-              onChange={(e) =>
-                setUserData((prev) => ({ ...prev, password: e.target.value }))
-              }
-              placeholder="Password"
-              type="password"
-              required
-            />
-            <TextFieldInput
-              value={userData.confirmedPassword}
-              onChange={(e) =>
-                setUserData((prev) => ({
-                  ...prev,
-                  confirmedPassword: e.target.value,
-                }))
-              }
-              placeholder="Confirm Password"
-              type="password"
-              required
-            />
+        <TextFieldInput
+          value={userData.email}
+          name="email"
+          onChange={(e) =>
+            setUserData((prev) => ({ ...prev, email: e.target.value }))
+          }
+          placeholder="Email"
+          required
+          size={"2"}
+        />
+        <TextFieldInput
+          value={userData.name || ""}
+          name="name"
+          onChange={(e) =>
+            setUserData((prev) => ({ ...prev, name: e.target.value }))
+          }
+          placeholder="Name"
+        />
+        <TextFieldInput
+          value={userData.password}
+          name="password"
+          onChange={(e) =>
+            setUserData((prev) => ({ ...prev, password: e.target.value }))
+          }
+          placeholder="Password"
+          type="password"
+          required
+        />
+        <TextFieldInput
+          value={userData.confirmedPassword}
+          onChange={(e) =>
+            setUserData((prev) => ({
+              ...prev,
+              confirmedPassword: e.target.value,
+            }))
+          }
+          placeholder="Confirm Password"
+          type="password"
+          required
+        />
 
-            <Box className="flex justify-start w-full">
-              <Text>Address</Text>
-            </Box>
+        <Box className="flex justify-start">
+          <Text>Address</Text>
+        </Box>
 
-            <TextFieldInput
-              value={userData.address.street}
-              name="address.street"
-              onChange={(e) =>
-                setUserData((prev) => ({
-                  ...prev,
-                  address: { ...prev.address, street: e.target.value },
-                }))
-              }
-              placeholder="Street"
-              required
-            />
-            <TextFieldInput
-              value={userData.address.city}
-              name="address.city"
-              onChange={(e) =>
-                setUserData((prev) => ({
-                  ...prev,
-                  address: { ...prev.address, city: e.target.value },
-                }))
-              }
-              placeholder="City"
-              required
-            />
-            <TextFieldInput
-              value={userData.address.state}
-              name="address.state"
-              onChange={(e) =>
-                setUserData((prev) => ({
-                  ...prev,
-                  address: { ...prev.address, state: e.target.value },
-                }))
-              }
-              placeholder="State"
-              required
-            />
-            <TextFieldInput
-              value={userData.address.zip}
-              name="address.zip"
-              onChange={(e) =>
-                setUserData((prev) => ({
-                  ...prev,
-                  address: { ...prev.address, zip: e.target.value },
-                }))
-              }
-              placeholder="Postal Code"
-              required
-            />
-            <TextFieldInput
-              value={userData.address.country}
-              name="address.country"
-              onChange={(e) =>
-                setUserData((prev) => ({
-                  ...prev,
-                  address: { ...prev.address, country: e.target.value },
-                }))
-              }
-              placeholder="Country"
-              required
-            />
-            {passwordError && <Text color="red">{passwordError}</Text>}
+        <TextFieldInput
+          value={userData.address.street}
+          name="address.street"
+          onChange={(e) =>
+            setUserData((prev) => ({
+              ...prev,
+              address: { ...prev.address, street: e.target.value },
+            }))
+          }
+          placeholder="Street"
+          required
+        />
+        <TextFieldInput
+          value={userData.address.city}
+          name="address.city"
+          onChange={(e) =>
+            setUserData((prev) => ({
+              ...prev,
+              address: { ...prev.address, city: e.target.value },
+            }))
+          }
+          placeholder="City"
+          required
+        />
+        <TextFieldInput
+          value={userData.address.state}
+          name="address.state"
+          onChange={(e) =>
+            setUserData((prev) => ({
+              ...prev,
+              address: { ...prev.address, state: e.target.value },
+            }))
+          }
+          placeholder="State"
+          required
+        />
+        <TextFieldInput
+          value={userData.address.zip}
+          name="address.zip"
+          onChange={(e) =>
+            setUserData((prev) => ({
+              ...prev,
+              address: { ...prev.address, zip: e.target.value },
+            }))
+          }
+          placeholder="Postal Code"
+          required
+        />
+        <TextFieldInput
+          value={userData.address.country}
+          name="address.country"
+          onChange={(e) =>
+            setUserData((prev) => ({
+              ...prev,
+              address: { ...prev.address, country: e.target.value },
+            }))
+          }
+          placeholder="Country"
+          required
+        />
+        {passwordError && <Text color="red">{passwordError}</Text>}
 
-            <SubmitButton>Create Account</SubmitButton>
-          </Flex>
-        </form>
-      </Box>
-    </>
+        <SubmitButton>Create Account</SubmitButton>
+        <Text>
+          Already have an account?{" "}
+          <Link href="/log-up" className="text-blue-500 hover:underline">
+            Sign in
+          </Link>
+        </Text>
+      </Flex>
+    </form>
   );
 };
 
