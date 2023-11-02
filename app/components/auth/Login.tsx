@@ -8,9 +8,11 @@ const LogInForm = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(""); // State to store the error message
 
   const onSubmit = async (e: any) => {
     e.preventDefault();
+    setError(""); // Reset the error message
     const formData = new FormData();
     formData.append("email", email);
     formData.append("password", password);
@@ -19,13 +21,15 @@ const LogInForm = () => {
       method: "POST",
       body: formData,
     });
-    if (!res.ok) {
-      console.log("Status: " + res.status);
-    }
+
     const data = await res.json();
-    console.log(data);
-    router.refresh();
-    router.push("/");
+    if (!res.ok) {
+      setError(data.error || "Error logging in"); // Set the error message from the API response
+    } else {
+      console.log(data);
+      router.refresh();
+      router.push("/");
+    }
   };
 
   return (
@@ -43,7 +47,8 @@ const LogInForm = () => {
             <Box mb={"3"}>
               <Heading>Login</Heading>
             </Box>
-
+            {error && <p style={{ color: "red" }}>{error}</p>}{" "}
+            {/* Display error message */}
             <TextFieldInput
               type="email"
               placeholder="Email"
@@ -51,7 +56,6 @@ const LogInForm = () => {
               onChange={(e) => setEmail(e.target.value)}
               required
             />
-
             <TextFieldInput
               type="password"
               placeholder="Password"
